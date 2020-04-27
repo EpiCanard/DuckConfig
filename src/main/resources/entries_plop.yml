@@ -1,0 +1,8 @@
+persoa:
+  name: "Patrick"
+  age: 42
+  pat:
+    plop: "toto"
+persob:
+  name: "Jean"
+  age: 45

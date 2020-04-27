@@ -1,0 +1,10 @@
+persob: !!fr.epicanard.duckconfig.Plop
+  name: Jean
+  age: '45'
+  pat:
+    plop: tutu
+persoa: !!fr.epicanard.duckconfig.Plop
+  name: Patrick
+  age: '42'
+  pat:
+    plop: toto
