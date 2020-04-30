@@ -1,38 +1,69 @@
 package fr.epicanard.duckconfig.parsers;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.nodes.Tag;
-import org.yaml.snakeyaml.representer.Representer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 
 public class YamlParser implements Parser {
-  private <T> T load(final InputStream file, final Class<T> clazz, final Constructor constructor) {
-    final Representer representer = new Representer();
 
-    representer.getPropertyUtils().setSkipMissingProperties(true);
-    final Yaml yaml = new Yaml(constructor, representer);
+  private <T> void setField(final Field field, final T obj, final ConfigurationSection section) throws IllegalAccessException {
+    final String name = field.getName();
+    field.setAccessible(true);
+    switch (field.getType().getSimpleName().toLowerCase()) {
+      case "string":
+        field.set(obj, section.getString(name, (String)field.get(obj)));
+        break;
+      case "integer":
+      case "int":
+        field.set(obj, section.getInt(name, field.getInt(obj)));
+        break;
+      case "double":
+        field.set(obj, section.getDouble(name, field.getDouble(obj)));
+        break;
+      case "boolean":
+        field.set(obj, section.getBoolean(name, field.getBoolean(obj)));
+        break;
+      case "list":
+         // CANT DO IT
+        break;
+      default:
+        field.set(obj, loadSection(section.getConfigurationSection(name), field.getType()));
+    }
+  }
 
-    return yaml.load(file);
+  private <T> T loadSection(final ConfigurationSection section, final Class<T> clazz) {
+    try {
+       final T obj = clazz.newInstance();
+      for (Field field : clazz.getDeclaredFields()) {
+        System.out.println(field.getType().getSimpleName());
+        setField(field, obj, section);
+      }
+      return obj;
+    } catch (InstantiationException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   @Override
   public <T> T load(final InputStream file, final Class<T> clazz) {
-    return load(file, clazz, new Constructor(clazz));
+    final YamlConfiguration yaml = YamlConfiguration.loadConfiguration(new InputStreamReader(file));
+    return loadSection(yaml, clazz);
   }
 
   @Override
   public <T> Map<String, T> loadMap(InputStream file, Class<T> clazz) {
-    return load(file, Map.class, new EntriesConstructor(clazz));
+    return null;
   }
 
   @Override
   public <T> String dump(final T config) {
-    final Yaml yaml = new Yaml(new YamlRepresenter());
-
-    return yaml.dumpAs(config, Tag.MAP, DumperOptions.FlowStyle.BLOCK);
+    return null;
   }
 }

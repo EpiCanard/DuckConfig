@@ -1,4 +1,6 @@
 name: "Patrick"
 age: 42
 pat:
-  plop: "toto"
+  - plop: "toto"
+  - plop: "tota"
+  - plop: "tato"

@@ -35,6 +35,17 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -53,6 +64,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.yaml:snakeyaml</include>
+                                    <include>org.bukkit:bukkit</include>
+                                    <include>commons-lang:commons-lang</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -67,7 +80,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>fr.epicanard.duckconfig.Example</mainClass>
+                            <mainClass>fr.epicanard.duckconfig.examples.Example</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

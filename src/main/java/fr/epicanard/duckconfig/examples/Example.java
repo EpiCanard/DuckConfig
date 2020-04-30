@@ -1,31 +1,10 @@
-package fr.epicanard.duckconfig;
+package fr.epicanard.duckconfig.examples;
 
-import fr.epicanard.duckconfig.annotations.Resource;
+import fr.epicanard.duckconfig.DuckLoader;
 import fr.epicanard.duckconfig.annotations.ResourceLocation;
 import fr.epicanard.duckconfig.annotations.ResourceWrapper;
 
 import java.util.Map;
-
-class Pat {
-  public String plop = "tutu";
-
-  @Override
-  public String toString() {
-    return String.format("[Plop:%s]", plop);
-  }
-}
-
-@Resource(value = "plop.yml", location = ResourceLocation.CLASS_PATH)
-class Plop {
-  public String name = "toto";
-  public String age = "plop";
-  public Pat pat = new Pat();
-
-  @Override
-  public String toString() {
-    return String.format("[Name:%s, Age:%s, Pat:%s]", name, age, pat);
-  }
-}
 
 public class Example {
   static void loadPlop() {
@@ -36,7 +15,7 @@ public class Example {
     System.out.println(plop);
 
     // Save
-    DuckLoader.save(plop, new ResourceWrapper(null, "plop.yml", ResourceLocation.FILE_PATH));
+//    DuckLoader.save(plop, new ResourceWrapper(null, "plop.yml", ResourceLocation.FILE_PATH));
 
   }
 
@@ -56,6 +35,6 @@ public class Example {
   public static void main(String[] args) {
     loadPlop();
     System.out.println("=============");
-    loadEntriesPlop();
+//    loadEntriesPlop();
   }
 }
