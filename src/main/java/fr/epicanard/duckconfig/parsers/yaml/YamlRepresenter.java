@@ -1,4 +1,4 @@
-package fr.epicanard.duckconfig.parsers;
+package fr.epicanard.duckconfig.parsers.yaml;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.introspector.Property;
@@ -17,17 +17,15 @@ class YamlRepresenter extends Representer {
     super(options);
   }
 
-  protected Set<Property> getProperties(Class<? extends Object> type) {
+  protected Set<Property> getProperties(final Class<? extends Object> type) {
     final Set<Property> propertySet = getPropertyUtils().getProperties(type);
 
     final List<String> fields = Arrays.stream(type.getDeclaredFields()).map(Field::getName).collect(Collectors.toList());
 
-    final List<Property> propsList = new ArrayList<>(propertySet);
-    propsList.sort(new BeanPropertyComparator(fields));
-
-    return new LinkedHashSet<>(propsList);
+    return propertySet.stream()
+        .sorted(new BeanPropertyComparator(fields))
+        .collect(Collectors.toCollection(LinkedHashSet::new));
   }
-
 
   /**
    * Comparator to keep fields in the right order
