@@ -1,5 +1,6 @@
-package fr.epicanard.duckconfig.parsers;
+package fr.epicanard.duckconfig.parsers.yaml;
 
+import fr.epicanard.duckconfig.parsers.Parser;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public class YamlParser implements Parser {
   private <T> T load(final InputStream file, final Class<T> clazz, final Constructor constructor) {
-    final Representer representer = new Representer();
+    final Representer representer = new YamlRepresenter();
 
     representer.getPropertyUtils().setSkipMissingProperties(true);
     final Yaml yaml = new Yaml(constructor, representer);
@@ -26,7 +27,7 @@ public class YamlParser implements Parser {
 
   @Override
   public <T> Map<String, T> loadMap(InputStream file, Class<T> clazz) {
-    return load(file, Map.class, new EntriesConstructor(clazz));
+    return load(file, Map.class, new YamlConstructor(clazz));
   }
 
   @Override
