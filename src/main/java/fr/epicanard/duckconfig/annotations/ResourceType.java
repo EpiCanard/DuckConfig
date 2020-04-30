@@ -1,7 +1,7 @@
 package fr.epicanard.duckconfig.annotations;
 
 import fr.epicanard.duckconfig.parsers.Parser;
-import fr.epicanard.duckconfig.parsers.YamlParser;
+import fr.epicanard.duckconfig.parsers.yaml.YamlParser;
 
 public enum ResourceType {
   YAML(YamlParser.class);
