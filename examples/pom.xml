@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
-    <groupId>fr.epicanard</groupId>
-    <artifactId>duckconfig</artifactId>
+    <groupId>fr.epicanard.duckconfig</groupId>
+    <artifactId>examples</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>DuckConfig</name>
+    <name>DuckConfigExamples</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,14 +18,26 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.26</version>
+            <groupId>fr.epicanard</groupId>
+            <artifactId>duckconfig</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>fr.epicanard.duckconfig.examples.Example</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -39,7 +51,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.yaml:snakeyaml</include>
+                                    <include>fr.epicanard:duckconfig</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
