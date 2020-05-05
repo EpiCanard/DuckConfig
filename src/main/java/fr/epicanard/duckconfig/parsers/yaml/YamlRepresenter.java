@@ -2,6 +2,8 @@ package fr.epicanard.duckconfig.parsers.yaml;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.introspector.Property;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.lang.reflect.Field;
@@ -25,6 +27,13 @@ class YamlRepresenter extends Representer {
     return propertySet.stream()
         .sorted(new BeanPropertyComparator(fields))
         .collect(Collectors.toCollection(LinkedHashSet::new));
+  }
+
+  @Override
+  public Node represent(Object data) {
+    final Node node = super.represent(data);
+    node.setTag(Tag.MAP);
+    return node;
   }
 
   /**

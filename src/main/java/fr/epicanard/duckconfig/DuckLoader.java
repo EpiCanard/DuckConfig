@@ -1,15 +1,21 @@
 package fr.epicanard.duckconfig;
 
+import fr.epicanard.duckconfig.annotations.Header;
 import fr.epicanard.duckconfig.annotations.Resource;
 import fr.epicanard.duckconfig.annotations.ResourceLocation;
 import fr.epicanard.duckconfig.annotations.ResourceWrapper;
-import fr.epicanard.duckconfig.exceptions.MissingResourceException;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import static fr.epicanard.duckconfig.annotations.AnnotationHandler.*;
 
 public class DuckLoader {
+  private static String LINE_BREAK = "\n";
+  private static String COMMENT = "# ";
 
   /**
    * Load a class from a yaml. Use Resource annotation to find where load yaml
@@ -31,7 +37,7 @@ public class DuckLoader {
    * @return Return a new instance of class deserialized from yaml
    */
   public static <T> T load(final Class<T> configClass, final String basePath) {
-    final Resource resource = getResource(configClass);
+    final Resource resource = getAnnotationOrThrow(AnnotationType.RESOURCE, configClass);
     return load(configClass, new ResourceWrapper(basePath, resource));
   }
 
@@ -66,10 +72,9 @@ public class DuckLoader {
    */
   public static <T> Map<String, T> loadMap(final Class<T> configClass, final ResourceWrapper wrapper) {
     final InputStream inputStream = loadFile(wrapper, configClass.getClassLoader());
-    if (inputStream != null) {
-      return wrapper.type.parser().loadMap(inputStream, configClass);
-    }
-    return new HashMap<>();
+    return Optional.ofNullable(inputStream)
+        .map(stream -> wrapper.type.parser().loadMap(stream, configClass))
+        .orElseGet(HashMap::new);
   }
 
   /**
@@ -82,10 +87,10 @@ public class DuckLoader {
   public static <T> void save(final T config, final ResourceWrapper wrapper) {
     try {
       final FileOutputStream stream = new FileOutputStream(new File(wrapper.basePath, wrapper.value));
-      byte[] bytes = wrapper.type.parser().dump(config).getBytes();
+      final Writer buffer = setHeader(config, new StringWriter());
+      byte[] bytes = wrapper.type.parser().dump(config, buffer).toString().getBytes();
       stream.write(bytes, 0, bytes.length);
       stream.close();
-
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -96,17 +101,26 @@ public class DuckLoader {
    * =========== */
 
   /**
-   * Get the resource annotation of class or throw an exception if missing
+   * Write the header of the file
    *
-   * @param configClass Class to analyze
-   * @return Return Resource found or throw a MissingResourceException
+   * @param config Config class that contains the header
+   * @param writer Base writer to use to write header
+   * @param <T>    Type of config
+   * @return Modified writer
    */
-  private static Resource getResource(final Class<?> configClass) {
-    final Resource resource = configClass.getAnnotation(Resource.class);
-    if (resource == null) {
-      throw new MissingResourceException(configClass.getName());
+  private static <T> Writer setHeader(final T config, final Writer writer) {
+    final Header header = getAnnotation(AnnotationType.HEADER, getBaseClass(config));
+    if (header != null) {
+      final String headerStr = Arrays.stream(header.value()).reduce("", (acc, line) -> acc + COMMENT + line + LINE_BREAK);
+      if (headerStr.length() > 0) {
+        try {
+          writer.write(headerStr);
+          writer.write(LINE_BREAK);
+        } catch (IOException e) {
+        }
+      }
     }
-    return resource;
+    return writer;
   }
 
   /**
@@ -125,7 +139,6 @@ public class DuckLoader {
         return classLoader.getResourceAsStream(resourcePath);
       }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
       return null;
     }
   }

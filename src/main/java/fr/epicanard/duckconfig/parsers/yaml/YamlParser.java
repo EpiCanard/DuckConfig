@@ -1,5 +1,6 @@
 package fr.epicanard.duckconfig.parsers.yaml;
 
+import static fr.epicanard.duckconfig.annotations.AnnotationHandler.getBaseClass;
 import fr.epicanard.duckconfig.parsers.Parser;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -8,6 +9,7 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -31,16 +33,15 @@ public class YamlParser implements Parser {
   }
 
   @Override
-  public <T> String dump(final T config) {
+  public <T> Writer dump(final T config, final Writer baseWriter) {
     final Representer representer = new YamlRepresenter();
-    if (config instanceof Map) {
-      final Iterator it = ((Map)config).values().iterator();
-      if (it.hasNext()) {
-        representer.addClassTag(it.next().getClass(), Tag.MAP);
-      }
-    }
+    representer.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+    representer.addClassTag(getBaseClass(config), Tag.MAP);
+
     final Yaml yaml = new Yaml(representer);
 
-    return yaml.dumpAs(config, Tag.MAP, DumperOptions.FlowStyle.BLOCK);
+    yaml.dump(config, baseWriter);
+
+    return baseWriter;
   }
 }
