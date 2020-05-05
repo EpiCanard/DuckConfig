@@ -32,9 +32,26 @@ public class Example {
     DuckLoader.save(entries, new ResourceWrapper("examples/target", "plop_entries.yml", ResourceLocation.FILE_PATH));
   }
 
+  static void loadEmptyEntries() {
+    // Load
+    final Map<String, Plop> entries = DuckLoader.loadMap(Plop.class, new ResourceWrapper(null, "empty_entries.yml", ResourceLocation.CLASS_PATH));
+
+    // Print
+    if (entries == null) {
+      System.out.println("SHOULD NOT BE NULL");
+    } else {
+      System.out.println("Is empty as expected");
+    }
+
+    // Save
+    DuckLoader.save(entries, new ResourceWrapper("examples/target", "empty_entries.yml", ResourceLocation.FILE_PATH));
+  }
+
   public static void main(String[] args) {
     loadPlop();
     System.out.println("=============");
     loadEntriesPlop();
+    System.out.println("=============");
+    loadEmptyEntries();
   }
 }

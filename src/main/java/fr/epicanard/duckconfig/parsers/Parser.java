@@ -1,6 +1,7 @@
 package fr.epicanard.duckconfig.parsers;
 
 import java.io.InputStream;
+import java.io.Writer;
 import java.util.Map;
 
 public interface Parser {
@@ -8,5 +9,5 @@ public interface Parser {
 
   <T> Map<String, T> loadMap(InputStream file, Class<T> clazz);
 
-  <T> String dump(T config);
+  <T> Writer dump(T config, Writer baseWriter);
 }
