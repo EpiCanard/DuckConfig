@@ -1,6 +1,7 @@
 name: Release
 
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
@@ -15,13 +16,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-        server-id: github
-        settings-path: ${{ github.workspace }}
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+    - name: Publish to EpiCanard Packages Maven Repository
+      run: mvn deploy -s settings.xml
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
+        DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
