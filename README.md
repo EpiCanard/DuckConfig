@@ -12,7 +12,7 @@ In your *pom.xml*, add the repository to DuckConfig
 ```xml
 <repository>
   <id>duckconfig-repo</id>
-  <url>https://maven.pkg.github.com/EpiCanard/DuckConfig</url>
+  <url>https://maven.epicanard.com/releases</url>
 </repository>
 ```
 
