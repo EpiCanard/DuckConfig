@@ -17,17 +17,17 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>duckconfig-repo</id>
-            <url>https://maven.epicanard.com/releases</url>
-        </repository>
+      <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+      </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>fr.epicanard</groupId>
-            <artifactId>duckconfig</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.github.Epicanard</groupId>
+            <artifactId>DuckConfig</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

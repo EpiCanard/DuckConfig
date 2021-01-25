@@ -7,7 +7,7 @@
 
     <groupId>fr.epicanard</groupId>
     <artifactId>duckconfig</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>DuckConfig</name>
 
     <properties>
@@ -15,13 +15,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>epicanard-repo</id>
-            <url>https://maven.epicanard.com/releases</url>
-        </repository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
