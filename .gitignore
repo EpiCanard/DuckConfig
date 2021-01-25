@@ -28,3 +28,6 @@ target/
 dependency-reduced-pom.xml
 .project
 bin/
+.metals
+.classpath
+.settings/
