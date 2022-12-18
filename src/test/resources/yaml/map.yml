@@ -1,0 +1,12 @@
+cop:
+  A: "AA"
+  B: "BB"
+dop:
+  A: "CA"
+  B: "CB"
+fop:
+  A: "DA"
+  B: "DB"
+gop:
+  A: "EA"
+  B: "EB"

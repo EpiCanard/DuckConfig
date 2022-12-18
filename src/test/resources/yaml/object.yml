@@ -1,0 +1,7 @@
+Plop:
+  A: "AA"
+  B: "BB"
+Toto:
+  Plop:
+    A: "CC"
+    B: "DD"
