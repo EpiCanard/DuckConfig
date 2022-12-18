@@ -5,7 +5,6 @@ import fr.epicanard.duckconfig.parsers.Parser;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
@@ -20,12 +19,12 @@ public class YamlParser implements Parser {
     representer.getPropertyUtils().setSkipMissingProperties(true);
     final Yaml yaml = new Yaml(constructor, representer);
 
-    return yaml.loadAs(file, clazz);
+    return yaml.load(file);
   }
 
   @Override
   public <T> T load(final InputStream file, final Class<T> clazz) {
-    return load(file, clazz, new CustomClassLoaderConstructor(clazz.getClassLoader()));
+    return load(file, clazz, new Constructor(clazz));
   }
 
   @Override
