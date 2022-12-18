@@ -7,7 +7,7 @@
 
     <groupId>fr.epicanard</groupId>
     <artifactId>duckconfig</artifactId>
-    <version>1.0.1</version>
+    <version>1.2.0</version>
     <name>DuckConfig</name>
 
     <properties>
