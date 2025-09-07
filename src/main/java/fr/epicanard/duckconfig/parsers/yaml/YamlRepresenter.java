@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 class YamlRepresenter extends Representer {
   YamlRepresenter() {
-    super();
+    super(new DumperOptions());
   }
 
   YamlRepresenter(final DumperOptions options) {

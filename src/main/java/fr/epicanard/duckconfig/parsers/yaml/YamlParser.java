@@ -3,6 +3,7 @@ package fr.epicanard.duckconfig.parsers.yaml;
 import static fr.epicanard.duckconfig.annotations.AnnotationHandler.getBaseClass;
 import fr.epicanard.duckconfig.parsers.Parser;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -10,7 +11,6 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.InputStream;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.Map;
 
 public class YamlParser implements Parser {
@@ -24,7 +24,7 @@ public class YamlParser implements Parser {
 
   @Override
   public <T> T load(final InputStream file, final Class<T> clazz) {
-    return load(file, clazz, new Constructor(clazz));
+    return load(file, clazz, new Constructor(clazz, new LoaderOptions()));
   }
 
   @Override

@@ -1,5 +1,6 @@
 package fr.epicanard.duckconfig.parsers.yaml;
 
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
@@ -15,7 +16,7 @@ class YamlConstructor extends Constructor {
   private TypeDescription itemType;
 
   YamlConstructor(Class<?> clazz) {
-    super();
+    super(new LoaderOptions());
     this.itemType = new TypeDescription(clazz);
     this.rootTag = ENTRIES;
   }
